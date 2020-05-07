@@ -14,7 +14,7 @@ let package = Package(
         dependencies: [
             // Dependencies declare other packages that this package depends on.
             // .package(url: /* package url */, from: "1.0.0"),
-            .package(url: "https://github.com/bow-swift/bow.git", from: "0.7.0")
+            //.package(url: "https://github.com/bow-swift/bow.git", from: "0.7.0")
         ],
         targets: [
             // Targets are the basic building blocks of a package. A target can define a module or a test suite.
@@ -22,13 +22,13 @@ let package = Package(
             .target(
                     name: "Swift_FP",
                     dependencies: [
-                        "Bow",
-                        "BowOptics",
-                        "BowRecursionSchemes",
-                        "BowFree",
-                        "BowGeneric",
-                        "BowEffects",
-                        "BowRx"
+                        //"Bow",
+                        //"BowOptics",
+                        //"BowRecursionSchemes",
+                        //"BowFree",
+                        //"BowGeneric",
+                        //"BowEffects",
+                        //"BowRx"
                     ]),
             .testTarget(
                     name: "Swift_FPTests",
@@ -36,15 +36,17 @@ let package = Package(
                         "Swift_FP",
 
                         // Type class laws
-                        "BowLaws",
-                        "BowOpticsLaws",
-                        "BowEffectsLaws",
+                        // ----------------
+                        //"BowLaws",
+                        //"BowOpticsLaws",
+                        //"BowEffectsLaws",
 
                         // Generators for PBT with SwiftCheck
-                        "BowGenerators",
-                        "BowFreeGenerators",
-                        "BowEffectsGenerators",
-                        "BowRxGenerators"
+                        // ----------------------------------
+                        //"BowGenerators",
+                        //"BowFreeGenerators",
+                        //"BowEffectsGenerators",
+                        //"BowRxGenerators"
                     ]),
         ]
 )
