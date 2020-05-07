@@ -55,6 +55,8 @@ public class MyClazz: CustomStringConvertible {
 extension MyClazz: ScopeFunc {
 }
 
+// Note: `MySubClazz` need not to inheritance from `ScopeFunc`
+// ==========================================================
 public class MySubClazz: MyClazz {
 
     override public var description: String {
@@ -78,9 +80,11 @@ public struct MyStruct: CustomStringConvertible {
 extension MyStruct: ScopeFunc {
 }
 
-public class MySubStruct: MyStruct {
+// Note: `MySubStruct` can not to inheritance from `MyStruct`, because they are `Value-Type`
+// ==========================================================
+public struct MySubStruct {
 
-    override public var description: String {
+    public var description: String {
         self.apply {
             let _ = $0
         }
@@ -90,6 +94,11 @@ public class MySubStruct: MyStruct {
         }
         return "MySubStruct(321)"
     }
+}
+
+// So need it
+// ===================================
+extension MySubStruct: ScopeFunc {
 }
 
 ```

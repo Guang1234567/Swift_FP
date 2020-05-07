@@ -63,6 +63,17 @@ extension Optional {
         return try self.map(block)
     }
 
+    public func combineWith<T, R>(
+            _ other: @autoclosure () -> T?,
+            _ block: (Wrapped, T) -> R
+    ) -> R? {
+        guard let r1 = self, let r2 = other() else {
+            return nil
+        }
+
+        return block(r1, r2)
+    }
+
     static public func combine<T1, T2, R>(
             _ t1: @autoclosure () -> T1?,
             _ t2: @autoclosure () -> T2?,
