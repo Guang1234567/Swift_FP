@@ -114,7 +114,25 @@ extension Optional {
     }
 }
 
-extension Result {
+public enum ComposeError: Error {
+    case COMPOSE_2(Error, Error)
+}
+
+extension Result where Failure == Error {
+
+    public func doFinally(_ body: () throws -> Void) -> Result {
+        do {
+            try body()
+            return self
+        } catch let nextError {
+            switch self {
+                case .success: // invalidate the success value and store the error.
+                    return .failure(nextError)
+                case .failure(let error): // concatenate the errors.
+                    return .failure(ComposeError.COMPOSE_2(error, nextError))
+            }
+        }
+    }
 
     @inline(__always) public func apply(_ block: (Success) -> ()) -> Self {
         guard case let .success(s) = self else {
