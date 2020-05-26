@@ -227,17 +227,3 @@ extension A2B : Functor, Applicative, Monad where A == Any, B == Any{
     // ...
 }
 */
-
-/*
-public func test() {
-    let xs = [2.0, 3.0, 5.0, 7.0, 11.0, 13.0, 17.0]
-    print("\(xs >>>= {[$0 + 10.0]} >>>= {[$0 * 2.0]})")
-    print("\(xs.flatMap {[$0 + 10.0]} .flatMap {[$0 * 2.0]})")
-
-    let gf = {$0 * 2} |> {$0 + 3}
-    print("\(gf(2))")  // print 7
-
-    let fg = {$0 + 3} <| {$0 * 2}
-    print("\(fg(2))") // print 7
-}
-*/
