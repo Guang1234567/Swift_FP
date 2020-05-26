@@ -6,6 +6,8 @@ The Library that provide :
 
 - add light-weight `Functor`, `Applicative`, `Monad` that implemented by myself O(∩_∩)O~.
 
+- add Function-Compose like operator `Elixir F#` :  `|>` and `<|`.
+
 - [bow-swift/bow](https://github.com/bow-swift/bow) the `FP Library` implemented by Swift.
     Similar to [arrow-kt/arrow](https://github.com/arrow-kt/arrow) in Kotlin.
 
@@ -103,4 +105,19 @@ public struct MySubStruct {
 extension MySubStruct: ScopeFunc {
 }
 
+```
+
+
+```swift
+public func test() {
+    let xs = [2.0, 3.0, 5.0, 7.0, 11.0, 13.0, 17.0]
+    print("\(xs >>>= {[$0 + 10.0]} >>>= {[$0 * 2.0]})")
+    print("\(xs.flatMap {[$0 + 10.0]} .flatMap {[$0 * 2.0]})")
+
+    let gf = {$0 * 2} |> {$0 + 3}
+    print("\(gf(2))")  // print 7
+
+    let fg = {$0 + 3} <| {$0 * 2}
+    print("\(fg(2))") // print 7
+}
 ```
