@@ -1,6 +1,6 @@
 import Foundation
 
-protocol Applicative: Functor {
+public protocol Applicative: Functor {
 
     associatedtype _KA2B: Kind
 

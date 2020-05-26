@@ -10,11 +10,13 @@ let package = Package(
             .library(
                     name: "Swift_FP",
                     targets: ["Swift_FP"]),
+            .library(
+                    name: "Swift_FP_DI",
+                    targets: ["Swift_FP_DI"]),
         ],
         dependencies: [
             // Dependencies declare other packages that this package depends on.
             // .package(url: /* package url */, from: "1.0.0"),
-            //.package(url: "https://github.com/bow-swift/bow.git", from: "0.7.0")
         ],
         targets: [
             // Targets are the basic building blocks of a package. A target can define a module or a test suite.
@@ -22,31 +24,16 @@ let package = Package(
             .target(
                     name: "Swift_FP",
                     dependencies: [
-                        //"Bow",
-                        //"BowOptics",
-                        //"BowRecursionSchemes",
-                        //"BowFree",
-                        //"BowGeneric",
-                        //"BowEffects",
-                        //"BowRx"
+                    ]),
+            .target(
+                    name: "Swift_FP_DI",
+                    dependencies: [
+                        "Swift_FP"
                     ]),
             .testTarget(
                     name: "Swift_FPTests",
                     dependencies: [
                         "Swift_FP",
-
-                        // Type class laws
-                        // ----------------
-                        //"BowLaws",
-                        //"BowOpticsLaws",
-                        //"BowEffectsLaws",
-
-                        // Generators for PBT with SwiftCheck
-                        // ----------------------------------
-                        //"BowGenerators",
-                        //"BowFreeGenerators",
-                        //"BowEffectsGenerators",
-                        //"BowRxGenerators"
                     ]),
         ]
 )

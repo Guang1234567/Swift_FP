@@ -14,7 +14,7 @@ final class OptionalFP<_A, _B>: Functor, Applicative, Monad {
     typealias _KA2B = Optional<A2B<_A, _B>>
 
     static func fmap(
-            _ transform: A2B<_A, _B>,
+            _ transform: @escaping A2B<_A, _B>,
             _ ka: _KA
     ) -> _KB {
         return ka.map(transform)
@@ -37,7 +37,7 @@ final class OptionalFP<_A, _B>: Functor, Applicative, Monad {
         return pure(a)
     }
 
-    static func bind(_ ka: _KA, _ a2KB: (_A) -> _KB) -> _KB {
+    static func bind(_ ka: _KA, _ a2KB: @escaping (_A) -> _KB) -> _KB {
         return ka.flatMap(a2KB)
     }
 }
@@ -46,7 +46,7 @@ extension Optional: Kind {
 
     public typealias _A = Wrapped
 
-    public func fmap<U>(_ transform: (_A) -> U) -> Optional<U> {
+    public func fmap<U>(_ transform: @escaping (_A) -> U) -> Optional<U> {
         return OptionalFP.fmap(transform, self)
     }
 
@@ -66,11 +66,11 @@ extension Optional: Kind {
         return OptionalFP<_A, Any>.return(a)
     }
 
-    public func bind<U>(_ a2KB: (_A) -> Optional<U>) -> Optional<U> {
+    public func bind<U>(_ a2KB: @escaping (_A) -> Optional<U>) -> Optional<U> {
         return OptionalFP.bind(self, a2KB)
     }
 
-    public static func >>>=<U>(_ ka: Optional<_A>, _ a2KB: (_A) -> Optional<U>) -> Optional<U> {
+    public static func >>>=<U>(_ ka: Optional<_A>, _ a2KB: @escaping (_A) -> Optional<U>) -> Optional<U> {
         return OptionalFP.bind(ka, a2KB)
     }
 }
@@ -87,7 +87,7 @@ final class ArrayFP<_A, _B>: Functor, Applicative, Monad {
     typealias _KB = Array<_B>
     typealias _KA2B = Array<A2B<_A, _B>>
 
-    static func fmap(_ transform: A2B<_A, _B>, _ ka: _KA) -> _KB {
+    static func fmap(_ transform: @escaping A2B<_A, _B>, _ ka: _KA) -> _KB {
         return ka.map(transform)
     }
 
@@ -108,7 +108,7 @@ final class ArrayFP<_A, _B>: Functor, Applicative, Monad {
         return pure(a)
     }
 
-    static func bind(_ ka: Array<_A>, _ a2KB: (_A) -> Array<_B>) -> Array<_B> {
+    static func bind(_ ka: Array<_A>, _ a2KB: @escaping (_A) -> Array<_B>) -> Array<_B> {
         return ka.flatMap(a2KB)
     }
 }
@@ -117,7 +117,7 @@ extension Array: Kind {
 
     public typealias _A = Element
 
-    public func fmap<U>(_ transform: (_A) -> U) -> Array<U> {
+    public func fmap<U>(_ transform: @escaping (_A) -> U) -> Array<U> {
         return ArrayFP.fmap(transform, self)
     }
 
@@ -137,11 +137,11 @@ extension Array: Kind {
         return ArrayFP<_A, Any>.return(a)
     }
 
-    public func bind<U>(_ a2KB: (_A) -> Array<U>) -> Array<U> {
+    public func bind<U>(_ a2KB: @escaping (_A) -> Array<U>) -> Array<U> {
         return ArrayFP.bind(self, a2KB)
     }
 
-    public static func >>>=<U>(_ ka: Array<_A>, _ a2KB: (_A) -> Array<U>) -> Array<U> {
+    public static func >>>=<U>(_ ka: Array<_A>, _ a2KB: @escaping (_A) -> Array<U>) -> Array<U> {
         return ArrayFP.bind(ka, a2KB)
     }
 }
@@ -158,7 +158,7 @@ final class ResultSuccessFP<_A, _B>: Functor, Applicative, Monad {
     typealias _KB = Result<_B, Error>
     typealias _KA2B = Result<A2B<_A, _B>, Error>
 
-    static func fmap(_ transform: A2B<_A, _B>, _ ka: _KA) -> _KB {
+    static func fmap(_ transform: @escaping A2B<_A, _B>, _ ka: _KA) -> _KB {
         return ka.map(transform)
     }
 
@@ -179,7 +179,7 @@ final class ResultSuccessFP<_A, _B>: Functor, Applicative, Monad {
         return pure(a)
     }
 
-    static func bind(_ ka: _KA, _ a2KB: (_A) -> _KB) -> _KB {
+    static func bind(_ ka: _KA, _ a2KB: @escaping (_A) -> _KB) -> _KB {
         return ka.flatMap(a2KB)
     }
 }
@@ -187,7 +187,7 @@ final class ResultSuccessFP<_A, _B>: Functor, Applicative, Monad {
 extension Result: Kind where Failure == Error {
     public typealias _A = Success
 
-    public func fmap<U>(_ transform: (_A) -> U) -> Result<U, Failure> {
+    public func fmap<U>(_ transform: @escaping (_A) -> U) -> Result<U, Failure> {
         return ResultSuccessFP.fmap(transform, self)
     }
 
@@ -207,11 +207,11 @@ extension Result: Kind where Failure == Error {
         return ResultSuccessFP<_A, Any>.return(a)
     }
 
-    public func bind<U>(_ a2KB: (_A) -> Result<U, Failure>) -> Result<U, Failure> {
+    public func bind<U>(_ a2KB: @escaping (_A) -> Result<U, Failure>) -> Result<U, Failure> {
         return ResultSuccessFP.bind(self, a2KB)
     }
 
-    public static func >>>=<U>(_ ka: Result<_A, Failure>, _ a2KB: (_A) -> Result<U, Failure>) -> Result<U, Failure> {
+    public static func >>>=<U>(_ ka: Result<_A, Failure>, _ a2KB: @escaping (_A) -> Result<U, Failure>) -> Result<U, Failure> {
         return ResultSuccessFP.bind(ka, a2KB)
     }
 }

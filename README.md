@@ -11,7 +11,7 @@ The Library that provide :
 - [bow-swift/bow](https://github.com/bow-swift/bow) the `FP Library` implemented by Swift.
     Similar to [arrow-kt/arrow](https://github.com/arrow-kt/arrow) in Kotlin.
 
-## Usage
+## Scope Function like in kotlin
 
 Just extension your `custom-type` to `ScopeFunc`
 
@@ -107,6 +107,7 @@ extension MySubStruct: ScopeFunc {
 
 ```
 
+## Functor Applicative Monad  function-compose
 
 ```swift
 public func test() {
@@ -119,5 +120,90 @@ public func test() {
 
     let fg = 2 |> {$0 + 3} |> {$0 * 2}
     print("\(fg)")
+}
+```
+
+## Dependency Injection   inversion-of-control
+ 
+```swift
+public protocol Animal {
+    var name: String? { get }
+}
+
+public class Cat: Animal {
+    public let name: String?
+
+    init(name: String?) {
+        self.name = name
+    }
+}
+
+public protocol Person {
+    func play()
+}
+
+public class PetOwner: Person {
+    let pets: [Animal]
+
+    init(pets: [Animal]) {
+        self.pets = pets
+    }
+
+    public func play() {
+        for pet in pets {
+            let name = pet.name ?? "someone"
+            print("I'm playing with \(name).")
+        }
+    }
+}
+
+public func testDI() {
+    let appScope = DIContainer()
+    let userScope = DIContainer(parent: appScope)
+
+    appScope.register(Animal.self) { c in
+        Cat(name: "Mimi")
+    }
+    appScope.register(Animal.self) { c in
+        Cat(name: "Mimi")
+    }
+    appScope.register(Animal.self, name: "tag_Max") { (currentContainer: DIContainer) in
+        Cat(name: "Max")
+    }
+    // Advanced Usage : be careful memory leak
+    // ========================================
+    appScope.registerProvider(Animal.self, name: "tag_Middle") { (currentContainer: DIContainer) in
+        return (
+                currentContainer.resolveProvider(Animal.self)?
+                // note: `[unowned currentContainer]` is used to avoid memory leak.
+                >>>= { [unowned currentContainer] (cat) in
+                    ScopeProvider {
+                        //let abc = currentContainer // for memory leak
+                        return Cat(name: "\(cat.name!) (singleton Cat)")
+                    }
+                }
+        )!
+    }
+
+    userScope.register(Person.self, isSingleton: false) { (currentContainer: DIContainer) in
+        PetOwner(pets: [
+            currentContainer.resolve(Animal.self, name: "tag_Max")!,
+            currentContainer.resolve(Animal.self, name: "tag_Middle")!,
+            currentContainer.resolve(Animal.self)!,
+        ])
+    }
+
+
+    let person: Person = userScope.resolve(Person.self)!
+    person.play() // prints "I'm playing with Mimi."
+
+    let person2: Person = userScope.resolve(Person.self)!
+
+    print("\(ObjectIdentifier(person as AnyObject))")
+    print("\(ObjectIdentifier(person2 as AnyObject))")
+    print("\(ObjectIdentifier(Person.self))")
+
+    print("\(ObjectIdentifier(userScope.resolve(Animal.self, name: "tag_Middle")! as AnyObject))")
+    print("\(ObjectIdentifier(userScope.resolve(Animal.self, name: "tag_Middle")! as AnyObject))")
 }
 ```
