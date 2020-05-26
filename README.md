@@ -2,7 +2,9 @@
 
 The Library that provide :
 
-- Some extension functions like in Kotlin (apply, let, width).
+- Some extension functions like in Kotlin (apply, let, with).
+
+- add light-weight `Functor`, `Applicative`, `Monad` that implemented by myself O(∩_∩)O~.
 
 - [bow-swift/bow](https://github.com/bow-swift/bow) the `FP Library` implemented by Swift.
     Similar to [arrow-kt/arrow](https://github.com/arrow-kt/arrow) in Kotlin.
